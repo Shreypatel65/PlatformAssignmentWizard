@@ -1,0 +1,211 @@
+body {
+    height: 100vh;
+    background: linear-gradient(rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    margin: 0%;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.button-30 {
+    align-items: center;
+    appearance: none;
+    background-color: #FCFCFD;
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px inset, #D6D6E7 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #36395A;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "JetBrains Mono", monospace;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+}
+
+.button-30:focus {
+    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.button-30:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+
+.button-30:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
+}
+
+table,
+th,
+td {
+    background-color: #FCFCFD;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    color: black;
+    font-size: 17px;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.left-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    /* background-color: #36395A; */
+    padding: 20px;
+    align-items: center;
+}
+
+.right-column {
+    flex: 1;
+    /* background-color: lightblue; */
+    padding: 20px;
+}
+
+.card {
+    width: 30vw;
+    height: auto;
+    border-radius: 30px;
+    background: #FCFCFD;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 50px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 26px -18px inset;
+    padding: 2.5%;
+    font-size: 22px;
+
+}
+
+.form__field {
+    font-family: "JetBrains Mono", monospace;
+    border: none;
+    border-bottom: 2px solid #9b9b9b;
+    outline: 0;
+    font-size: 19px;
+    color: inherit;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 17px;
+    color: #9b9b9b;
+    pointer-events: none;
+}
+
+.form__field:focus {
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #116399, #38caef);
+    border-image-slice: 1;
+}
+
+.form__field:focus~.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 17px;
+    color: #38caef;
+    font-weight: 500;
+}
+
+.form__field:required,
+.form__field:invalid {
+    box-shadow: none;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+
+input[type="date"],
+input[type="time"] {
+    width: calc(100% - 22px);
+    /* Adjust the width based on your needs */
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 45px;
+}
+
+.form__group {
+    display: flex;
+    margin-bottom: 30px;
+    /* Optional: Add some margin for spacing between form groups */
+}
+
+.form__group label {
+    width: 45%;
+    margin-right: 1%;
+    /* Optional: Add some spacing between label and input */
+    align-self: center;
+}
+
+.train_schedule,
+.one {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h2 {
+    font-family: "JetBrains Mono", monospace;
+    color: #FCFCFD;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: calc(100% - 22px);
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+select {
+    position: relative;
+    display: inline-block;
+    width: calc(100%);
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 10px;
+    height: 40px;
+}

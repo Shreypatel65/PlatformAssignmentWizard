@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script>
+        function toggleInput() {
+            var checkbox = document.getElementById("next_day_checkbox");
+            var inputBox = document.getElementById("next_day_date");
+
+            inputBox.style.display = checkbox.checked ? "block" : "none";
+            inputBox.required = checkbox.checked;
+        }
+        {% if error %}
+            alert("{{ error }}");
+        {% endif %}
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-column">
+            <div class="card">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form__group">
+                        <label for="train_name">Train Name:</label>
+                        <input type="text" class="form__field" name="train_name" required>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="train_name">Train Number:</label>
+                        <input type="text" class="form__field" name="train_number" required>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="start_date">Date:</label>
+                        <input type="date" id="start_date" name="start_date" required>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="start_time">Arrival <br> Time:</label>
+                        <input type="time" id="start_time" name="start_time" required>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="end_time">Departure Time:</label>
+                        <input type="time" id="end_time" name="end_time" required>
+                    </div>
+
+                    <div class="form__group" id="next_day_div">
+                        <label for="next_day">Departure Next Day:</label>
+                        <input type="checkbox" id="next_day_checkbox" name="next_day" onclick="toggleInput()">
+                        <input type="date" id="next_day_date" name="next_day_date"
+                            style="display: none; width: calc(100% - -40px);">
+                    </div>
+
+                    <button class="button-30" role="button" type="submit"
+                        style="width: 135px; font-size: 20px; align-self: center;">Submit</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <form action="/find" method="post">
+                    {% csrf_token %}
+                    <div class="form__group" style="margin-top: 10px; margin-bottom: 15px;">
+                        <label for="priority1">Priority:</label>
+                        <div class="dropdown">
+                            <select name="priority1">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="-">NA</option>
+                            </select>
+                        </div>
+
+                        <div class="dropdown">
+                            <select name="priority2">
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="-">NA</option>
+                            </select>
+                        </div>
+
+                        <div class="dropdown">
+                            <select name="priority3">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3" selected>3</option>
+                                <option value="4">4</option>
+                                <option value="-">NA</option>
+                            </select>
+                        </div>
+
+                        <div class="dropdown">
+                            <select name="priority4">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4" selected>4</option>
+                                <option value="-">NA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="button-30" role="button" type="submit"
+                        style="width: 170px; font-size: 20px; align-self: center; margin-top: 10px;">
+                        Find Schedule
+                    </button>
+                </form>
+
+
+            </div>
+        </div>
+        <div class="right-column">
+            {% if newdata %}
+            <div class="train_schedule">
+                <h2>Train Schedule</h2>
+                <table>
+                    <colgroup>
+                        <col style="width: auto;">
+                        <col style="width: auto;">
+                        <col style="width: auto;">
+                        <col style="width: auto;">
+                        <col style="width: auto;">
+                        <col style="width: 15%;">
+                        <col style="width: 15%;">
+                        <col style="width: auto;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Sr. No</th>
+                            <th>Train Name</th>
+                            <th>Train Number</th>
+                            <th>Arrival Time</th>
+                            <th>Departure Time</th>
+                            <th>Arrival Date</th>
+                            <th>Departure Date</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for data in newdata %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.train_name}}</td>
+                            <td>{{data.train_number}}</td>
+                            <td>{{data.arrival_time}}</td>
+                            <td>{{data.departure_time}}</td>
+                            <td>{{data.arrival_date}}</td>
+                            <td>{{data.departure_date}}</td>
+                            <td>
+                                <form action="/delete/{{data.id}}" method="post">
+                                    {% csrf_token %}
+                                    <button class="button-30" role="button" id="delete-button"
+                                        style="height: 40px; width: 90px; font-size: 16px; ">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+            {% endif %}
+
+
+        </div>
+    </div>
+</body>
+</html>
+<!-- <div class="right-column">
+            
+    {% if schedule %}
+    {% for platform_number, data_list in schedule.items %}
+    <h2>Platform Number: <strong>{{ platform_number }}</strong></h2>
+    {% for data in data_list %}
+    <p>
+        Train Name: {{ data.train_name }}<br>
+        Arrival Time: {{ data.arrival_time }}<br>
+        Departure Time: {{ data.departure_time }}<br>
+    </p>
+    {% endfor %}
+    {% endfor %}
+    {% endif %}
+    {% if remaining_activity %}
+    <h2>
+        <p>Remaining Trains:</p>
+    </h2>
+    {% for data in remaining_activity %}
+    <p>
+        Train Name: {{ data.train_name }}<br>
+        Arrival Time: {{ data.arrival_time }}<br>
+        Departure Time: {{ data.departure_time }}<br>
+        Arrival Date: {{ data.arrival_date }}<br>
+    </p>
+    {% endfor %}
+
+    {% endif %}
+    
+</div> -->

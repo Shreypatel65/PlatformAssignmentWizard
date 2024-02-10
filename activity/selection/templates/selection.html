@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        img {
+            width: 700px;
+            height: 800px;
+            position: absolute;
+            right: 0;
+            z-index: -1;
+        }
+
+        .row-1 td {
+            background: lightblue;
+        }
+
+        .row-2 td {
+            background: lightsalmon;
+        }
+
+        .row-3 td {
+            background: lightgreen;
+        }
+
+        .row-4 td {
+            background: lightgoldenrodyellow;
+        }
+
+        .row-na td {
+            background: red;
+        }
+
+        .bottom_nav {
+            margin: 10px;
+        }
+
+        .train {
+            z-index: 1;
+            width: 50px;
+            height: 50px;
+            background: #ff8900;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+    </style>
+
+</head>
+
+<body style="background: aliceblue; display: flex;">
+
+    <div style="flex: 1; margin-left: 50px; margin-top: 50px;">
+
+        <table>
+            <colgroup>
+                <col style="width: 5%;">
+                <col style="width: auto;">
+                <col style="width: auto;">
+                <col style="width: auto;">
+                <col style="width: auto;">
+                <col style="width: 17%;">
+                <col style="width: auto;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Platform No.</th>
+                    <th>Train Name</th>
+                    <th>Train Number</th>
+                    <th>Arrival Time</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Date</th>
+                    <th>Departure Date</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for pno,data in platform.items %}
+                {% for train in data %}
+                <tr class="row-{{ forloop.parentloop.counter }}">
+                    <td>
+                        {{pno}}
+                    </td>
+                    <td>
+                        {{train.train_name}}
+                    </td>
+                    <td>
+                        {{train.train_number}}
+                    </td>
+                    <td>
+                        {{train.arrival_time}}
+                    </td>
+                    <td>
+                        {{train.departure_time}}
+                    </td>
+                    <td>
+                        {{train.arrival_date}}
+                    </td>
+                    <td>
+                        {{train.departure_date}}
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endfor %}
+                {% for data in remaining_activity %}
+                <tr class="row-na">
+                    <td>
+                        NA
+                    </td>
+                    <td>
+                        {{data.train_name}}
+                    </td>
+                    <td>
+                        {{data.train_number}}
+                    </td>
+                    <td>
+                        {{data.arrival_time}}
+                    </td>
+                    <td>
+                        {{data.departure_time}}
+                    </td>
+                    <td>
+                        {{data.arrival_date}}
+                    </td>
+                    <td>
+                        {{data.departure_date}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="display: flex; justify-content: center;">
+            <a href="{% url 'index' %}" class="button-30 bottom_nav" role="button">Home</a>
+            <a href="{% url 'download_file' filename='output.xlsx' %}" class="button-30 bottom_nav" role="button">Excel</a>
+        </div>
+    </div>
+
+    <div style="flex: 1;" class="drawhere">
+        <img src="{% static 'final.png' %}" alt="mysvg">
+    </div>
+
+    <script>
+        var platform = {{ platform| safe }};
+        const platformWidth = {
+            1: 518,
+            2: 445,
+            3: 204,
+            4: 133
+        }
+
+        async function animateDivs() {
+            var container = $(".drawhere");
+
+            async function createAndAnimateDiv(item, platformKey, topPosition) {
+                return new Promise((resolve) => {
+                    var newDiv = $("<div>", {
+                        class: "train",
+                        text: item.train_number,
+                        style: `right: ${platformWidth[platformKey]}px; top: 666px;`
+                    });
+
+                    container.append(newDiv);
+
+                    newDiv.animate({
+                        top: topPosition + "px"
+                    }, {
+                        duration: 1000,
+                        complete: resolve
+                    });
+                });
+            }
+
+            // Use Object.keys to get all platform keys
+            mykeys = Object.keys(platform);
+
+            // Create an array of promises for each platform key
+            const promisesArray = mykeys.map(async (key) => {
+                var topPosition = 170;
+                for (const item of platform[key]) {
+                    await createAndAnimateDiv(item, key, topPosition);
+                    topPosition += 60;
+                }
+            });
+
+        }
+
+        // Call the function to animate divs
+        animateDivs();
+    </script>
+
+</body>
+
+</html>
