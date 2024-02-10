@@ -17,18 +17,22 @@
             z-index: -1;
         }
 
+        .row-1,
         .row-1 td {
             background: lightblue;
         }
 
+        .row-2,
         .row-2 td {
             background: lightsalmon;
         }
 
+        .row-3,
         .row-3 td {
             background: lightgreen;
         }
 
+        .row-4,
         .row-4 td {
             background: lightgoldenrodyellow;
         }
@@ -45,7 +49,6 @@
             z-index: 1;
             width: 50px;
             height: 50px;
-            background: #ff8900;
             position: absolute;
             display: flex;
             align-items: center;
@@ -139,7 +142,8 @@
         </table>
         <div style="display: flex; justify-content: center;">
             <a href="{% url 'index' %}" class="button-30 bottom_nav" role="button">Home</a>
-            <a href="{% url 'download_file' filename='output.xlsx' %}" class="button-30 bottom_nav" role="button">Excel</a>
+            <a href="{% url 'download_file' filename='output.xlsx' %}" class="button-30 bottom_nav"
+                role="button">Excel</a>
         </div>
     </div>
 
@@ -162,7 +166,7 @@
             async function createAndAnimateDiv(item, platformKey, topPosition) {
                 return new Promise((resolve) => {
                     var newDiv = $("<div>", {
-                        class: "train",
+                        class: `row-${platformKey} train`,
                         text: item.train_number,
                         style: `right: ${platformWidth[platformKey]}px; top: 666px;`
                     });
