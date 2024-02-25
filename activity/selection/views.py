@@ -6,7 +6,7 @@ from django.http import FileResponse, HttpResponse
 
 from .workers.connection import collection
 from .workers.selection import activity_selection
-from .workers.helper import export_to_excel, add_timestamp, isValid, insert_to_db
+from .workers.helper import export_to_excel, add_timestamp, isValid, insert_to_db, get_all_trains
 
 # Set base and static directories
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,14 +21,14 @@ def index(request):
 
         if not is_valid:
             # If data is not valid, render index page with error message
-            newdata = list(collection.find({}))
+            newdata = get_all_trains()
             return render(request, 'index.html', {'newdata': newdata, 'error': error_message})
 
         # Insert valid data into the database
         insert_to_db(data)
 
         # Retrieve updated data from the database
-        newdata = list(collection.find({}))
+        newdata = get_all_trains()
 
         # Render index page with updated data
         return render(request, 'index.html', {'newdata': newdata})
@@ -38,7 +38,7 @@ def index(request):
             return render(request, 'index.html')
         else:
             # Retrieve data from the database
-            newdata = list(collection.find({}))
+            newdata = get_all_trains()
             # Render index page with data
             return render(request, 'index.html', {'newdata': newdata})
 
@@ -46,7 +46,7 @@ def index(request):
 def delete(request, data_id):
     if request.method == 'POST':
         # Delete a record from the database
-        collection.delete_one({'id': ObjectId(data_id)})
+        collection.delete_one({'_id': ObjectId(data_id)})
 
     return redirect('index')
 

@@ -1,11 +1,8 @@
-from .helper import remove_id_fields
 from .connection import collection
 
 
 def activity_selection(request):
-    newdata = list(collection.find({}).sort('departure_timestamp', 1))
-
-    # Perform activity selection based on arrival timestamp and departure timestamp
+    newdata = list(collection.find({},{'_id':0}).sort('departure_timestamp', 1))
     platform = {}
     delay_time_min = 0
     platform_priority = []
@@ -38,6 +35,4 @@ def activity_selection(request):
         return helper(count+1, discarded_activities)
 
     remaining_activity = helper(count, remaining_activity)
-    cleaned_platform = remove_id_fields(platform)
-
-    return cleaned_platform, remaining_activity
+    return platform, remaining_activity

@@ -88,7 +88,7 @@
 
                 {% for pno,data in platform.items %}
                 {% for train in data %}
-                <tr class="row-{{ forloop.parentloop.counter }}">
+                <tr class="row-{{ pno }}">
                     <td>
                         {{pno}}
                     </td>
@@ -150,7 +150,6 @@
     <div style="flex: 1;" class="drawhere">
         <img src="{% static 'final.png' %}" alt="mysvg">
     </div>
-
     <script>
         var platform = {{ platform| safe }};
         const platformWidth = {

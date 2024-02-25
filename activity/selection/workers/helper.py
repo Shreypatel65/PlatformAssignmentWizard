@@ -8,10 +8,10 @@ from openpyxl.styles import PatternFill
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
+id_filter = {'id':'$_id', 'train_name':1, 'train_number':1, 'arrival_date':1, 'departure_date':1, 'arrival_time':1, 'departure_time':1, 'arrival_timestamp':1, 'departure_timestamp':1, '_id': 0}
 
 def insert_to_db(data):
     document = {
-        'id': ObjectId(),
         'train_name': data['train_name'],
         'train_number': data['train_number'],
         'arrival_date': data['arrival_date'],
@@ -76,20 +76,20 @@ def add_timestamp(request):
     return mydict
 
 
-def remove_id_fields(data):
-    cleaned_data = {}
+# def remove_id_fields(data):
+#     cleaned_data = {}
 
-    for key, items in data.items():
-        cleaned_items = []
+#     for key, items in data.items():
+#         cleaned_items = []
 
-        for item in items:
-            cleaned_item = {key: value for key, value in item.items() if key not in [
-                '_id', 'id']}
-            cleaned_items.append(cleaned_item)
+#         for item in items:
+#             cleaned_item = {key: value for key, value in item.items() if key not in [
+#                 '_id', 'id']}
+#             cleaned_items.append(cleaned_item)
 
-        cleaned_data[key] = cleaned_items
+#         cleaned_data[key] = cleaned_items
 
-    return cleaned_data
+#     return cleaned_data
 
 
 def export_to_excel(platform_confirm, remaining_activity):
@@ -145,3 +145,10 @@ def export_to_excel(platform_confirm, remaining_activity):
                     cell.fill = green_fill
 
     return True
+
+
+def get_all_trains():
+    """Get all the trains from the database."""
+
+    data = list(collection.find({},id_filter))
+    return data
